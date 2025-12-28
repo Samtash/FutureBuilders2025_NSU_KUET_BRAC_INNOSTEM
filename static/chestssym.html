@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare+ - Chest Symptoms</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: slideDown 0.6s ease;
+        }
+
+        body.dark-mode .top-navbar {
+            background: rgba(17, 24, 39, 0.95);
+            border-bottom-color: #374151;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-icon img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.5px;
+        }
+
+        body.dark-mode .app-name {
+            color: white;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .symptoms-container {
+            min-height: 100vh;
+            padding: 90px 20px 100px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        .symptoms-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .symptoms-header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: slideDown 0.6s ease;
+        }
+
+        .symptoms-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 8px;
+        }
+
+        body.dark-mode .symptoms-title {
+            color: white;
+        }
+
+        .symptoms-subtitle {
+            font-size: 15px;
+            color: #6b7280;
+        }
+
+        body.dark-mode .symptoms-subtitle {
+            color: #9ca3af;
+        }
+
+        .symptoms-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 32px;
+        }
+
+        .symptom-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px 24px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: left;
+            font-size: 16px;
+            font-weight: 500;
+            color: #111827;
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .symptom-btn:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .symptom-btn:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .symptom-btn:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .symptom-btn:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .symptom-btn:hover {
+            border-color: #3b82f6;
+            transform: translateX(4px);
+        }
+
+        .symptom-btn.selected {
+            background: #3b82f6;
+            border-color: #3b82f6;
+            color: white;
+        }
+
+        body.dark-mode .symptom-btn {
+            background: #1f2937;
+            border-color: #374151;
+            color: white;
+        }
+
+        body.dark-mode .symptom-btn:hover {
+            border-color: #60a5fa;
+        }
+
+        body.dark-mode .symptom-btn.selected {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .action-buttons {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-top: 1px solid #e5e7eb;
+            padding: 16px 20px;
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            z-index: 100;
+        }
+
+        body.dark-mode .action-buttons {
+            background: rgba(17, 24, 39, 0.95);
+            border-top-color: #374151;
+        }
+
+        .action-btn {
+            padding: 10px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .more-btn {
+            background: #6b7280;
+            color: white;
+        }
+
+        .more-btn:hover {
+            background: #4b5563;
+            transform: translateY(-2px);
+        }
+
+        .done-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .done-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .more-btn {
+            background: #4b5563;
+        }
+
+        body.dark-mode .more-btn:hover {
+            background: #6b7280;
+        }
+
+        body.dark-mode .done-btn {
+            background: #059669;
+        }
+
+        body.dark-mode .done-btn:hover {
+            background: #10b981;
+        }
+
+        @media (max-width: 640px) {
+            .symptoms-title {
+                font-size: 24px;
+            }
+
+            .symptom-btn {
+                padding: 16px 20px;
+                font-size: 15px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-navbar">
+        <div class="navbar-logo">
+            <div class="logo-icon">
+                <img src="images/logo.png" alt="HealthCare+ Logo">
+            </div>
+            <span class="app-name">HealthCare+</span>
+        </div>
+    </div>
+
+    <!-- Mode Toggle Controls -->
+    <div class="controls-top-right">
+        <button class="control-btn active" id="lightModeBtn" title="Light mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+        <button class="control-btn" id="darkModeBtn" title="Dark mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="symptoms-container">
+        <div class="symptoms-content">
+            <div class="symptoms-header">
+                <h1 class="symptoms-title">Chest Symptoms</h1>
+                <p class="symptoms-subtitle">Select all symptoms you're experiencing</p>
+            </div>
+
+            <div class="symptoms-list">
+                <div id="resultsBox"
+                    style="display:none; margin-top:18px; padding:14px; border:1px solid #e5e7eb; border-radius:12px; background:#fff;">
+                    <h3 style="margin:0 0 8px 0; font-size:16px;">Possible conditions</h3>
+                    <pre id="resultsText" style="margin:0; white-space:pre-wrap;"></pre>
+                </div>
+                <button class="symptom-btn" data-symptom="weakness">Weakness</button>
+                <button class="symptom-btn" data-symptom="chest-pain">Chest Pain</button>
+                <button class="symptom-btn" data-symptom="shortness-of-breath">Shortness of Breath</button>
+                <button class="symptom-btn" data-symptom="cough">Cough</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="action-buttons">
+        <button class="action-btn more-btn" id="moreBtn">More Conditions</button>
+        <button class="action-btn done-btn" id="doneBtn">Done</button>
+    </div>
+
+    <script>
+        // Dark mode toggle
+        const lightModeBtn = document.getElementById('lightModeBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+
+        lightModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode');
+            lightModeBtn.classList.add('active');
+            darkModeBtn.classList.remove('active');
+        });
+
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.add('dark-mode');
+            darkModeBtn.classList.add('active');
+            lightModeBtn.classList.remove('active');
+        });
+
+        // Symptom selection
+        const symptomBtns = document.querySelectorAll('.symptom-btn');
+        const selectedSymptoms = new Set();
+
+        // Load previously selected symptoms
+        const storedSymptoms = sessionStorage.getItem('selectedSymptoms');
+        if (storedSymptoms) {
+            const symptomsArray = JSON.parse(storedSymptoms);
+            symptomsArray.forEach(symptom => {
+                selectedSymptoms.add(symptom);
+                const btn = document.querySelector(`[data-symptom="${symptom}"]`);
+                if (btn) btn.classList.add('selected');
+            });
+        }
+
+        symptomBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const symptom = this.getAttribute('data-symptom');
+
+                if (selectedSymptoms.has(symptom)) {
+                    selectedSymptoms.delete(symptom);
+                    this.classList.remove('selected');
+                } else {
+                    selectedSymptoms.add(symptom);
+                    this.classList.add('selected');
+                }
+
+                // Save to sessionStorage
+                sessionStorage.setItem('selectedSymptoms', JSON.stringify([...selectedSymptoms]));
+            });
+        });
+
+        // Navigation buttons
+        document.getElementById('moreBtn').addEventListener('click', () => {
+            window.location.href = 'landingpage.html';
+        });
+
+        document.getElementById('doneBtn').addEventListener('click', async () => {
+            if (selectedSymptoms.size === 0) {
+                alert('Please select at least one symptom');
+                return;
+            }
+
+            const resultsBox = document.getElementById("resultsBox");
+            const resultsText = document.getElementById("resultsText");
+
+            resultsBox.style.display = "block";
+            resultsText.textContent = "Loading...";
+
+            try {
+                const res = await fetch("http://127.0.0.1:8000/triage/chest", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ symptoms: [...selectedSymptoms] })
+                });
+
+                if (!res.ok) {
+                    const err = await res.text();
+                    resultsText.textContent = "Backend error:\n" + err;
+                    return;
+                }
+
+                const data = await res.json();
+                const preds = data.reply || [];
+
+                if (!preds.length) {
+                    resultsText.textContent = "No predictions returned.";
+                    return;
+                }
+
+                resultsText.textContent = preds
+                    .map(p => `• ${p.condition} (${(p.confidence * 100).toFixed(1)}%)`)
+                    .join("\n");
+
+            } catch (err) {
+                resultsText.textContent = "Backend not reachable. Make sure FastAPI is running on port 8000.";
+                console.error(err);
+            }
+        });
+
+
+    </script>
+</body>
+
+</html>

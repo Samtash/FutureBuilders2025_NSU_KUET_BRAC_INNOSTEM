@@ -4,6 +4,8 @@ import numpy as np
 
 model = joblib.load("diagnosis_model.pkl")
 feature_order = joblib.load("feature_order.pkl")
+def get_feature_order():
+    return feature_order
 
 def predict_conditions(symptoms: dict):
     """

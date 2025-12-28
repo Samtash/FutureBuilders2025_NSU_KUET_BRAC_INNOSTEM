@@ -445,64 +445,40 @@
             lightModeBtn.classList.remove('active');
         });
 
-        // Body part selection with ripple effect
-        const bodyPartBtns = document.querySelectorAll('.body-part-btn');
+        // Body-part navigation
+        document.querySelectorAll('.body-part-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const bodyPart = btn.dataset.part;
 
-        // Map body parts to their respective pages
-        const bodyPartPages = {
-            'head': 'sym1.html',
-            'chest': 'sym2.html',
-            'stomach': 'sym3.html',
-            'arms': 'sym4.html',
-            'legs': 'sym5.html',
-            'back': 'sym6.html'
-        };
+                sessionStorage.setItem("selectedBodyPart", bodyPart);
 
-        bodyPartBtns.forEach(btn => {
-            btn.addEventListener('click', function (e) {
-                const bodyPart = this.getAttribute('data-part');
+                // GO TO SYMPTOMS PAGE
+                const pageMap = {
+                    head: "head.html",
+                    chest: "chestssym.html"
+                };
 
-                // Create ripple effect
-                const ripple = document.createElement('span');
-                ripple.classList.add('ripple-effect');
+                if (!pageMap[bodyPart]) {
+                    alert("That body part page is not built yet.");
+                    return;
+                }
 
-                const rect = this.getBoundingClientRect();
-                const size = Math.max(rect.width, rect.height);
-                const x = e.clientX - rect.left - size / 2;
-                const y = e.clientY - rect.top - size / 2;
+                window.location.href = pageMap[bodyPart];
 
-                ripple.style.width = ripple.style.height = size + 'px';
-                ripple.style.left = x + 'px';
-                ripple.style.top = y + 'px';
 
-                this.appendChild(ripple);
-
-                // Store selected body part
-                localStorage.setItem('selectedBodyPart', bodyPart);
-
-                // Get the target page for this body part
-                const targetPage = bodyPartPages[bodyPart];
-
-                // Animate out and redirect
-                setTimeout(() => {
-                    document.querySelector('.landing-container').style.opacity = '0';
-                    document.querySelector('.landing-container').style.transform = 'scale(0.95)';
-                }, 100);
-
-                setTimeout(() => {
-                    window.location.href = targetPage;
-                }, 400);
             });
         });
+    </script>
 
-        // Check if user is coming from authentication
-        window.addEventListener('load', () => {
-            // You can add user info display here if needed
-            const userEmail = localStorage.getItem('userEmail');
-            if (userEmail) {
-                console.log('Welcome back:', userEmail);
-            }
-        });
+
+    //Check if user is coming from authentication
+    window.addEventListener('load', () => {
+    // You can add user info display here if needed
+    const userEmail = localStorage.getItem('userEmail');
+    if (userEmail) {
+    console.log('Welcome back:', userEmail);
+    }
+    });
     </script>
 </body>
 
