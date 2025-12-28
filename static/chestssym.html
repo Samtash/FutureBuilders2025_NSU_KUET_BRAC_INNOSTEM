@@ -410,8 +410,78 @@
                     return;
                 }
 
+
                 const data = await res.json();
                 const preds = data.reply || [];
+                // -------------------------------
+                // TOP DIAGNOSIS → HEALTHCARE HELP
+                // -------------------------------
+
+                if (preds.length > 0) {
+                    const top = preds[0];
+                    const condition = top.condition;
+                    const confidence = (top.confidence * 100).toFixed(1);
+
+                    let message = "";
+
+                    if (condition === "respiratory_infection") {
+                        message =
+                            `🩺 Recommended Healthcare Support\n\n` +
+                            `Condition: Respiratory Infection\n` +
+                            `Confidence: ${confidence}%\n\n` +
+                            `Healthcare Professional: Md. Rahim Uddin\n` +
+                            `Role: Community Health Practitioner\n` +
+                            `Care Center: Madhumati Community Health Point\n` +
+                            `Distance: 2.3 km (walking)\n` +
+                            `Contact: +880 17XX-XXXXXX\n\n` +
+                            `Phone-based guidance available for breathing and cough-related issues.\n\n` +
+                            `Designed for hill track and remote areas.`;
+                    }
+
+                    else if (condition === "cardiac_risk") {
+                        message =
+                            `🩺 Recommended Healthcare Support\n\n` +
+                            `Condition: Cardiac Risk\n` +
+                            `Confidence: ${confidence}%\n\n` +
+                            `Healthcare Professional: Fatema Khatun\n` +
+                            `Role: Trained Health Care Worker\n` +
+                            `Care Center: Hill Track Primary Care Unit – Dhanpara\n` +
+                            `Distance: 4.8 km\n` +
+                            `Contact: +880 18XX-XXXXXX\n\n` +
+                            `Initial assessment and emergency referral support available.\n\n` +
+                            `Designed for hill track and remote areas.`;
+                    }
+
+                    else if (condition === "viral_fever") {
+                        message =
+                            `🩺 Recommended Healthcare Support\n\n` +
+                            `Condition: Viral Fever\n` +
+                            `Confidence: ${confidence}%\n\n` +
+                            `Healthcare Professional: Abdul Karim\n` +
+                            `Role: Rural Medical Assistant\n` +
+                            `Care Center: Local Health Support Center – Bandarban\n` +
+                            `Distance: 1.5 km\n` +
+                            `Contact: +880 19XX-XXXXXX\n\n` +
+                            `Over-phone guidance and basic treatment support available.\n\n` +
+                            `Designed for hill track and remote areas.`;
+                    }
+
+                    else {
+                        message =
+                            `🩺 Healthcare Support Recommendation\n\n` +
+                            `Condition: ${condition.replace("_", " ")}\n` +
+                            `Confidence: ${confidence}%\n\n` +
+                            `Please contact your nearest community healthcare worker for guidance.\n\n` +
+                            `Designed for hill track and remote areas.`;
+                    }
+
+                    // Small delay so diagnosis list renders first
+                    setTimeout(() => {
+                        alert(message);
+                    }, 300);
+                }
+
+
 
                 if (!preds.length) {
                     resultsText.textContent = "No predictions returned.";
@@ -426,6 +496,7 @@
                 resultsText.textContent = "Backend not reachable. Make sure FastAPI is running on port 8000.";
                 console.error(err);
             }
+
         });
 
 
