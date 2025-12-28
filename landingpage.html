@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare+ - Select Body Part</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Landing Page Specific Styles */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 70px;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            animation: slideDown 0.6s ease;
+        }
+
+        body.dark-mode .top-navbar {
+            background: rgba(17, 24, 39, 0.95);
+            border-bottom-color: #374151;
+        }
+
+        .navbar-logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 6px rgba(59, 130, 246, 0.2);
+        }
+
+        .logo-icon svg {
+            width: 24px;
+            height: 24px;
+            color: white;
+        }
+
+        .app-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #111827;
+            letter-spacing: -0.5px;
+        }
+
+        body.dark-mode .app-name {
+            color: white;
+        }
+
+        .landing-container {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            padding-top: 90px;
+            opacity: 0;
+            animation: fadeIn 0.8s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .landing-content {
+            width: 100%;
+            max-width: 600px;
+            text-align: center;
+        }
+
+        .landing-header {
+            margin-bottom: 48px;
+            animation: slideDown 0.6s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .landing-title {
+            font-size: 32px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        body.dark-mode .landing-title {
+            color: white;
+        }
+
+        .landing-subtitle {
+            font-size: 16px;
+            color: #6b7280;
+            line-height: 1.6;
+        }
+
+        body.dark-mode .landing-subtitle {
+            color: #9ca3af;
+        }
+
+        .body-parts-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .body-part-btn {
+            background: white;
+            border: 2px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 32px 24px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            animation: slideUp 0.5s ease forwards;
+        }
+
+        .body-part-btn:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .body-part-btn:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .body-part-btn:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .body-part-btn:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .body-part-btn:nth-child(5) {
+            animation-delay: 0.5s;
+        }
+
+        .body-part-btn:nth-child(6) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .body-part-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .body-part-btn:hover::before {
+            opacity: 0.05;
+        }
+
+        .body-part-btn:hover {
+            transform: translateY(-4px);
+            border-color: #3b82f6;
+            box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
+        }
+
+        .body-part-btn:active {
+            transform: translateY(-2px);
+        }
+
+        body.dark-mode .body-part-btn {
+            background: #1f2937;
+            border-color: #374151;
+        }
+
+        body.dark-mode .body-part-btn:hover {
+            border-color: #60a5fa;
+            box-shadow: 0 12px 24px rgba(96, 165, 250, 0.2);
+        }
+
+        .body-part-icon {
+            width: 48px;
+            height: 48px;
+            margin: 0 auto 16px;
+            background: linear-gradient(135deg, #3b82f6 0%, #6366f1 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 1;
+        }
+
+        .body-part-icon svg {
+            width: 28px;
+            height: 28px;
+            color: white;
+        }
+
+        .body-part-label {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111827;
+            position: relative;
+            z-index: 1;
+        }
+
+        body.dark-mode .body-part-label {
+            color: white;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #6b7280;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.6s forwards;
+        }
+
+        .back-link:hover {
+            color: #2563eb;
+        }
+
+        body.dark-mode .back-link {
+            color: #9ca3af;
+        }
+
+        body.dark-mode .back-link:hover {
+            color: #60a5fa;
+        }
+
+        /* Click animation */
+        @keyframes ripple {
+            0% {
+                transform: scale(0);
+                opacity: 1;
+            }
+
+            100% {
+                transform: scale(2);
+                opacity: 0;
+            }
+        }
+
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(59, 130, 246, 0.4);
+            width: 100px;
+            height: 100px;
+            animation: ripple 0.6s ease-out;
+        }
+
+        @media (max-width: 640px) {
+            .landing-title {
+                font-size: 28px;
+            }
+
+            .body-parts-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Top Navigation Bar -->
+    <div class="top-navbar">
+        <div class="navbar-logo">
+            <div class="logo-icon">
+                <img src="images/logo.png" alt="HealthCare+ Logo" class="icon-logo">
+            </div>
+            <span class="app-name">HealthCare+</span>
+        </div>
+    </div>
+
+    <!-- Mode Toggle Controls -->
+    <div class="controls-top-right">
+        <button class="control-btn active" id="lightModeBtn" title="Light mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+        <button class="control-btn" id="darkModeBtn" title="Dark mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <div class="landing-container">
+        <div class="landing-content">
+            <!-- Header -->
+            <div class="landing-header">
+                <h1 class="landing-title">Select Body Part</h1>
+                <p class="landing-subtitle">Choose the area you'd like to focus on for your health assessment</p>
+            </div>
+
+            <!-- Body Parts Grid -->
+            <div class="body-parts-grid">
+                <!-- Head -->
+                <button class="body-part-btn" data-part="head">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Head</div>
+                </button>
+
+                <!-- Chest -->
+                <button class="body-part-btn" data-part="chest">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Chest</div>
+                </button>
+
+                <!-- Stomach -->
+                <button class="body-part-btn" data-part="stomach">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Stomach</div>
+                </button>
+
+                <!-- Arms -->
+                <button class="body-part-btn" data-part="arms">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Arms</div>
+                </button>
+
+                <!-- Legs -->
+                <button class="body-part-btn" data-part="legs">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 10V3L4 14h7v7l9-11h-7z" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Legs</div>
+                </button>
+
+                <!-- Back -->
+                <button class="body-part-btn" data-part="back">
+                    <div class="body-part-icon">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                    </div>
+                    <div class="body-part-label">Back</div>
+                </button>
+            </div>
+
+            <!-- Back Link -->
+            <a href="index.html" class="back-link">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Sign In
+            </a>
+        </div>
+    </div>
+
+    <script>
+        // Dark mode toggle
+        const lightModeBtn = document.getElementById('lightModeBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+
+        lightModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode');
+            lightModeBtn.classList.add('active');
+            darkModeBtn.classList.remove('active');
+        });
+
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.add('dark-mode');
+            darkModeBtn.classList.add('active');
+            lightModeBtn.classList.remove('active');
+        });
+
+        // Body part selection with ripple effect
+        const bodyPartBtns = document.querySelectorAll('.body-part-btn');
+
+        // Map body parts to their respective pages
+        const bodyPartPages = {
+            'head': 'sym1.html',
+            'chest': 'sym2.html',
+            'stomach': 'sym3.html',
+            'arms': 'sym4.html',
+            'legs': 'sym5.html',
+            'back': 'sym6.html'
+        };
+
+        bodyPartBtns.forEach(btn => {
+            btn.addEventListener('click', function (e) {
+                const bodyPart = this.getAttribute('data-part');
+
+                // Create ripple effect
+                const ripple = document.createElement('span');
+                ripple.classList.add('ripple-effect');
+
+                const rect = this.getBoundingClientRect();
+                const size = Math.max(rect.width, rect.height);
+                const x = e.clientX - rect.left - size / 2;
+                const y = e.clientY - rect.top - size / 2;
+
+                ripple.style.width = ripple.style.height = size + 'px';
+                ripple.style.left = x + 'px';
+                ripple.style.top = y + 'px';
+
+                this.appendChild(ripple);
+
+                // Store selected body part
+                localStorage.setItem('selectedBodyPart', bodyPart);
+
+                // Get the target page for this body part
+                const targetPage = bodyPartPages[bodyPart];
+
+                // Animate out and redirect
+                setTimeout(() => {
+                    document.querySelector('.landing-container').style.opacity = '0';
+                    document.querySelector('.landing-container').style.transform = 'scale(0.95)';
+                }, 100);
+
+                setTimeout(() => {
+                    window.location.href = targetPage;
+                }, 400);
+            });
+        });
+
+        // Check if user is coming from authentication
+        window.addEventListener('load', () => {
+            // You can add user info display here if needed
+            const userEmail = localStorage.getItem('userEmail');
+            if (userEmail) {
+                console.log('Welcome back:', userEmail);
+            }
+        });
+    </script>
+</body>
+
+</html>

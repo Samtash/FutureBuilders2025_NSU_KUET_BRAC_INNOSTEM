@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare+ - Sign In</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <div class="controls-top-right">
+        <button class="control-btn active" id="lightModeBtn" title="Light mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+        </button>
+        <button class="control-btn" id="darkModeBtn" title="Dark mode">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+            </svg>
+        </button>
+    </div>
+
+    <div class="controls-top-left">
+        <button class="layout-btn active" id="mobileBtn">Mobile</button>
+        <button class="layout-btn" id="webBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+            </svg>
+            Web
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="auth-wrapper" id="authWrapper">
+            <div class="app-branding">
+                <div class="app-icon">
+                    <img src="/static/images/logo.png" alt="HealthCare+ Logo" class="icon-logo">
+                </div>
+                <h1 class="app-title">HealthCare+</h1>
+                <p class="app-subtitle">Your health, simplified</p>
+            </div>
+
+            <div class="auth-card">
+                <div class="google-logo">
+                    <svg viewBox="0 0 48 48" width="32" height="32">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                        <path fill="none" d="M0 0h48v48H0z" />
+                    </svg>
+                </div>
+                <h2 class="auth-title">Sign in with Google</h2>
+                <p class="auth-description">
+                    Use your Google account to access your health records and appointments
+                </p>
+
+                <button class="google-btn">
+                    <svg class="google-btn-icon" viewBox="0 0 48 48" width="20" height="20">
+                        <path fill="#EA4335"
+                            d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+                        <path fill="#4285F4"
+                            d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+                        <path fill="#FBBC05"
+                            d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+                        <path fill="#34A853"
+                            d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+                        <path fill="none" d="M0 0h48v48H0z" />
+                    </svg>
+                    Continue with Google
+                </button>
+
+                <div class="divider">
+                    <span>or</span>
+                </div>
+
+                <p class="alternative-text">
+                    New to HealthCare+? <a href="#" class="link">Create an account</a>
+                </p>
+            </div>
+
+            <div class="footer">
+                <a href="#" class="footer-link">Privacy Policy</a>
+                <span class="footer-divider">•</span>
+                <a href="#" class="footer-link">Terms of Service</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+
+    <script>
+        const lightModeBtn = document.getElementById('lightModeBtn');
+        const darkModeBtn = document.getElementById('darkModeBtn');
+        const mobileBtn = document.getElementById('mobileBtn');
+        const webBtn = document.getElementById('webBtn');
+        const authWrapper = document.getElementById('authWrapper');
+
+        // UI Controls
+        lightModeBtn.addEventListener('click', () => {
+            document.body.classList.remove('dark-mode');
+            lightModeBtn.classList.add('active');
+            darkModeBtn.classList.remove('active');
+        });
+
+        darkModeBtn.addEventListener('click', () => {
+            document.body.classList.add('dark-mode');
+            darkModeBtn.classList.add('active');
+            lightModeBtn.classList.remove('active');
+        });
+
+        mobileBtn.addEventListener('click', () => {
+            authWrapper.classList.remove('web-layout');
+            mobileBtn.classList.add('active');
+            webBtn.classList.remove('active');
+        });
+
+        webBtn.addEventListener('click', () => {
+            authWrapper.classList.add('web-layout');
+            webBtn.classList.add('active');
+            mobileBtn.classList.remove('active');
+        });
+
+        // Google Sign-In Configuration
+        const CLIENT_ID = '882428564679-6qkaavfciv2oa2cl273rqlif2v0l069s.apps.googleusercontent.com';
+
+        function initGoogleSignIn() {
+            if (typeof google === 'undefined') return;
+            try {
+                google.accounts.id.initialize({
+                    client_id: CLIENT_ID,
+                    callback: handleCredentialResponse,
+                    ux_mode: 'popup',
+                    context: 'signin'
+                });
+            } catch (error) {
+                console.error('Error initializing Google Sign-In:', error);
+            }
+        }
+
+        function handleCredentialResponse(response) {
+            const userInfo = parseJwt(response.credential);
+            localStorage.setItem('userEmail', userInfo.email);
+            localStorage.setItem('userName', userInfo.name);
+            // Redirect to landing page after sign-in
+            window.location.href = '/landingpage.html';
+        }
+
+        function parseJwt(token) {
+            const base64Url = token.split('.')[1];
+            const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            const jsonPayload = decodeURIComponent(atob(base64).split('').map(function (c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+            return JSON.parse(jsonPayload);
+        }
+
+        function handleGoogleSignIn() {
+            const client = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: 'email profile openid',
+                callback: (response) => {
+                    if (response.access_token) {
+                        fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
+                            headers: { 'Authorization': `Bearer ${response.access_token}` }
+                        })
+                            .then(res => res.json())
+                            .then(userInfo => {
+                                localStorage.setItem('userEmail', userInfo.email);
+                                localStorage.setItem('userName', userInfo.name);
+                                window.location.href = '/landingpage.html';
+                            });
+                    }
+                }
+            });
+            client.requestAccessToken();
+        }
+
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                initGoogleSignIn();
+                const googleBtn = document.querySelector('.google-btn');
+                if (googleBtn) googleBtn.addEventListener('click', handleGoogleSignIn);
+            }, 500);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 import joblib
 import numpy as np
 
-# Load model and feature order
+
 model = joblib.load("diagnosis_model.pkl")
 feature_order = joblib.load("feature_order.pkl")
 
