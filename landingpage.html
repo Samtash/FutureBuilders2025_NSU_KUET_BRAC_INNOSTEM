@@ -452,20 +452,14 @@
 
                 sessionStorage.setItem("selectedBodyPart", bodyPart);
 
-                // GO TO SYMPTOMS PAGE
-                const pageMap = {
-                    head: "head.html",
-                    chest: "chestssym.html"
-                };
-
-                if (!pageMap[bodyPart]) {
-                    alert("That body part page is not built yet.");
-                    return;
+                // route to correct page per part
+                if (bodyPart === "chest") {
+                    window.location.href = "chestssym.html";
+                } else if (bodyPart === "head") {
+                    window.location.href = "head.html";
+                } else {
+                    alert("Only Head + Chest are connected right now.");
                 }
-
-                window.location.href = pageMap[bodyPart];
-
-
             });
         });
     </script>

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Select Head Symptoms</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 30px;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        .symptoms-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .symptom-btn {
+            padding: 10px 15px;
+            border: 1px solid #333;
+            background: #f5f5f5;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        .symptom-btn.selected {
+            background: #007bff;
+            color: white;
+        }
+
+        .actions {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h2>Select Head-related Symptoms</h2>
+
+    <div class="symptoms-list">
+        <button class="symptom-btn" data-symptom="headache">Headache</button>
+        <button class="symptom-btn" data-symptom="dizziness">Dizziness</button>
+        <button class="symptom-btn" data-symptom="nausea">Nausea</button>
+    </div>
+    <div id="resultsBox"
+        style="display:none; margin-top:18px; padding:14px; border:1px solid #e5e7eb; border-radius:12px; background:#fff;">
+        <h3 style="margin:0 0 8px 0; font-size:16px;">Possible conditions</h3>
+        <pre id="resultsText" style="margin:0; white-space:pre-wrap;"></pre>
+    </div>
+    <div class="action-buttons">
+        <button class="action-btn more-btn" id="moreBtn">More Conditions</button>
+        <button class="action-btn done-btn" id="doneBtn">Done</button>
+    </div>
+
+    <script>
+        // Symptom selection (works with your existing 3 buttons)
+        const symptomBtns = document.querySelectorAll('.symptom-btn');
+        const selectedSymptoms = new Set(JSON.parse(sessionStorage.getItem('selectedSymptoms') || '[]'));
+
+        // restore selected styling
+        selectedSymptoms.forEach(symptom => {
+            const btn = document.querySelector(`[data-symptom="${symptom}"]`);
+            if (btn) btn.classList.add('selected');
+        });
+
+        symptomBtns.forEach(btn => {
+            btn.addEventListener('click', function () {
+                const symptom = this.getAttribute('data-symptom');
+
+                if (selectedSymptoms.has(symptom)) {
+                    selectedSymptoms.delete(symptom);
+                    this.classList.remove('selected');
+                } else {
+                    selectedSymptoms.add(symptom);
+                    this.classList.add('selected');
+                }
+
+                sessionStorage.setItem('selectedSymptoms', JSON.stringify([...selectedSymptoms]));
+            });
+        });
+
+        // Navigation
+        document.getElementById('moreBtn').addEventListener('click', () => {
+            window.location.href = 'landingpage.html';
+        });
+
+        // Done -> backend
+        document.getElementById('doneBtn').addEventListener('click', async () => {
+            if (selectedSymptoms.size === 0) {
+                alert('Please select at least one symptom');
+                return;
+            }
+
+            const resultsBox = document.getElementById("resultsBox");
+            const resultsText = document.getElementById("resultsText");
+
+            resultsBox.style.display = "block";
+            resultsText.textContent = "Loading...";
+
+            try {
+                const res = await fetch("http://127.0.0.1:8000/triage/head", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ symptoms: [...selectedSymptoms] })
+                });
+
+                if (!res.ok) {
+                    resultsText.textContent = "Backend error:\n" + await res.text();
+                    return;
+                }
+
+                const data = await res.json();
+                const preds = data.reply || [];
+
+                if (!preds.length) {
+                    resultsText.textContent = "No predictions returned.";
+                    return;
+                }
+
+                resultsText.textContent = preds
+                    .map(p => `• ${p.condition} (${(p.confidence * 100).toFixed(1)}%)`)
+                    .join("\n");
+
+            } catch (err) {
+                resultsText.textContent = "Backend not reachable. Is FastAPI running on port 8000?";
+                console.error(err);
+            }
+        });
+    </script>
+
+
+
+</body>
+
+</html>

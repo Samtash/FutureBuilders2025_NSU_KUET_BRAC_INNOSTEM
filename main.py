@@ -140,6 +140,33 @@ def chat(input_data: ChatInput):
         return {
             "reply": "I didn't recognize that symptom. Please choose from the list or type 'done'."
         }
+class HeadTriageInput(BaseModel):
+    symptoms: List[str]
+
+@app.post("/triage/head")
+def triage_head(data: HeadTriageInput):
+    ui_to_model = {
+        "headache": "headache",
+        "dizziness": "dizziness",
+        "nausea": "nausea",
+    }
+
+    symptom_dict = {feature: 0 for feature in feature_order}
+
+    for ui_symptom in data.symptoms:
+        mapped = ui_to_model.get(ui_symptom)
+        if mapped and mapped in symptom_dict:
+            symptom_dict[mapped] = 1
+
+    predictions = predict_conditions(symptom_dict)
+    top = predictions[:3]
+
+    return {
+        "reply": [
+            {"condition": d, "confidence": float(c)}
+            for d, c in top
+        ]
+    }
 
 class ChestTriageInput(BaseModel):
     symptoms: List[str]
@@ -177,4 +204,10 @@ def serve_chest():
     html_path = Path("static/chestssym.html")
     if not html_path.exists():
         return HTMLResponse(content="Error: chestssym.html not found in static/", status_code=404)
+    return html_path.read_text(encoding="utf-8")
+@app.get("/head.html", response_class=HTMLResponse)
+def serve_head():
+    html_path = Path("head.html")
+    if not html_path.exists():
+        return HTMLResponse(content="Error: head.html not found in root directory.", status_code=404)
     return html_path.read_text(encoding="utf-8")
