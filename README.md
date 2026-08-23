@@ -1,110 +1,88 @@
-Placeholder
 # Healthcare+
 
-## Overview
+A symptom triage web app for people who live far from a doctor. You tap the part of your body that hurts, tap the symptoms you have, and a trained model returns the three most likely conditions with a confidence score for each. Almost no typing and almost no reading required.
 
-*Healthcare+* is an early-stage web-based healthcare support system designed to assist users in identifying possible health conditions based on selected symptoms.  
-This project currently represents the *core logic and workflow* of the solution. The long-term vision is to evolve Healthcare+ into a *lightweight mobile application for Android and iOS*, making it accessible to a wider population.
+Built for FutureBuilders 2025 by a team from NSU, KUET and BRAC under the INNOSTEM track.
 
-The system is built with a focus on simplicity, usability, and scalability, particularly for communities with limited access to healthcare professionals.
+**[Demo video](https://drive.google.com/file/d/1USsNGV7fo9vklaaEyoTWkcqudXk_4gis/view?usp=sharing)**
 
----
+![Healthcare+ interface](static/image.png)
 
-## Problem Statement
+> **Not a medical device.** This returns preliminary guidance only. It is not a diagnosis and it does not replace seeing a doctor.
 
-Many people in rural areas,hill tracts and  underserved regions face challenges such as:
-- Long distances to healthcare facilities
-- Limited access to qualified doctors
-- Low health literacy
-- Unreliable or limited internet connectivity
+## The problem we were solving
 
-Healthcare++ aims to reduce these barriers by providing a simple, guided interface that helps users understand potential health concerns based on symptoms.
+In rural Bangladesh and the hill tracts, getting to a clinic can eat a whole day of work. Qualified doctors are thin on the ground, health literacy is low and mobile data is patchy. People end up guessing, waiting or paying for a trip they did not need.
 
----
+That shaped three decisions:
 
-## Solution Approach
+- **Tap, do not type.** The whole flow is pictures and buttons. Someone who cannot read a symptom list can still point at a chest and tap a cough icon.
+- **Keep it small.** Vanilla JS on the front, one Python process on the back, a model file measuring 3 KB. It runs on a cheap Android browser and a weak connection.
+- **Give ranked answers, not one answer.** Three possibilities with confidence percentages tells a user how sure the system is. A single verdict would oversell it.
 
-Healthcare+ uses a *step-by-step interaction flow*:
-1. Users select a body part from a landing page.
-2. They are guided to a symptom selection page related to that body part.
-3. Selected symptoms are processed by a trained machine learning model.
-4. The system returns a preliminary health insight.
+## How it works
 
-This flow is intentionally designed to be intuitive, minimizing text input and complexity.The application is intentionally designed with a highly intuitive, visual-first interface so simple that even a 3-year-old could navigate it, directly addressing usability challenges caused by illiteracy.
+```
+index.html          sign in screen
+   |
+landingpage.html    tap a body part
+   |
+head.html / static/chestssym.html
+   |                tap symptoms, hit Done
+   v
+POST /triage/head or /triage/chest
+   |
+predict_model.py    build the feature vector, run the model
+   v
+top 3 conditions with confidence
+```
 
+The front end sends a plain list of symptom strings. The backend maps those UI labels onto the model's feature names, builds a 14 slot binary vector in the exact order the model was trained on, then returns sorted probabilities. That feature order is saved to disk alongside the model in `feature_order.pkl`, which is what stops the vector from silently going out of order between training and serving.
 
+**The model.** Bernoulli Naive Bayes from scikit-learn, trained on 14 binary symptom features across 6 conditions: migraine, viral fever, respiratory infection, gastro infection, cardiac risk and minor injury. Bernoulli was the right pick here because every input is a yes or no flag rather than a count or a measurement, and it stays readable and tiny, which matters when the whole point is running on low end devices.
 
-## Key Features
+## Endpoints
 
-- Body-part-based symptom selection
-- Session-based symptom tracking
-- Backend-powered machine learning prediction
-- Simple UI flow suitable for low-literacy users
-- Modular design for future mobile app integration
+| Method | Route | What it does |
+|---|---|---|
+| GET | `/` | sign in page |
+| GET | `/landingpage.html` | body part selection |
+| GET | `/head.html`, `/chestssym.html` | symptom pages |
+| POST | `/triage/head` | takes `{"symptoms": [...]}`, returns top 3 with confidence |
+| POST | `/triage/chest` | same for chest symptoms |
+| POST | `/chat` | text driven version of the same flow |
+| GET | `/health` | server health check |
 
----
+## Running it
 
-## Technical Stack
+```bash
+git clone https://github.com/<your-username>/FutureBuilders2025_NSU_KUET_BRAC_INNOSTEM.git
+cd FutureBuilders2025_NSU_KUET_BRAC_INNOSTEM
 
-### Frontend
-- HTML
-- CSS
-- JavaScript (Vanilla)
+pip install fastapi uvicorn scikit-learn joblib numpy
+uvicorn main:app --reload
+```
 
-### Backend
-- Python
-- FastAPI
-- Uvicorn
+Open `http://127.0.0.1:8000` in a browser.
 
-### Machine Learning
-- Scikit-learn
-- Joblib (model serialization)
-- Naive Bayes
+## Stack
 
----
+Python, FastAPI, Uvicorn, scikit-learn, joblib, numpy on the backend. HTML, CSS and vanilla JavaScript on the front, no framework.
 
-## Strengths
+## Where it stands
 
-- *Distance-aware design*: Reduces the need for immediate physical travel to healthcare centers
-- *Low literacy friendly*: Minimal text, guided selection, clear navigation
-- *Lightweight architecture*: Can function on low-end devices
-- *Scalable logic*: Easily extendable to mobile platforms
+This is a hackathon prototype and the scope is honest about that:
 
----
+- Head and chest are wired end to end. The other body parts on the landing page are built in the UI but not yet routed to the model.
+- The `/chat` endpoint keeps its state in a single global dict, so it works for one user at a time. Real sessions need a token or a database.
+- The training set is small and synthetic. Six conditions is a proof of the pipeline, not clinical coverage.
+- Sign in is a front end screen only, there is no auth backend behind it.
 
-## Constraints Faced
+## What comes next
 
-- *Limited internet availability*: Influenced the decision to keep the app lightweight
-- *Health literacy challenges*: Required careful UI flow and symptom presentation
-- *Team coordination across distance*: Development and testing were done remotely
-- *Early-stage prototype*: Focused on logic validation rather than full production readiness
-
----
-
-## Future Scope
-
-- Development of a native *Android and iOS application*
-- Offline-first functionality with periodic sync
-- Expanded symptom and condition dataset
-- Multilingual support
-- Integration with local healthcare providers
-
----
-
-## Disclaimer
-
-Healthcare+ is not a replacement for professional medical advice. But greatly
-The system provides preliminary insights only and should be used as a supportive tool, not a diagnostic authority.
-
----
-
-## Team
-
-Developed as part of an innovation-focused project with the goal of improving healthcare accessibility through technology.
-
-demo video link
-https://drive.google.com/file/d/1USsNGV7fo9vklaaEyoTWkcqudXk_4gis/view?usp=sharing
-
-
-
-![alt text](image.png)
+- Wire the remaining body parts and grow the symptom to condition dataset
+- Session tokens so more than one user can run the chat flow at once
+- Offline first behaviour with sync, since the target users lose connection often
+- Bangla language support
+- Package it as an Android app
+- Referral logic that points users to the nearest actual clinic instead of stopping at a prediction
